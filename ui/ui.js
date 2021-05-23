@@ -5,26 +5,21 @@ window.onload = async () => {
     modelsElem.disabled = true;
     spawnButton.disabled = true;
 
-    fetch('vehicles.json', {
+    const response = await fetch('vehicles.json', {
         method: 'GET',
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
     })
-    .then(res => res.json())
-    .then(res => {
-        console.log('vehicles loaded!')
+    const json = await response.json()
 
-        // const vehicles = res;
+    for (const element of json) {
+        modelsElem.innerHTML += `<option value="${element.Name}">${element.DisplayName}</option>`
+    }
 
-        for (const element of res) {
-            modelsElem.innerHTML += `<option value="${element.Name}">${element.DisplayName}</option>`
-        }
-
-        modelsElem.disabled = false;
-        spawnButton.disabled = false;
-    })
+    modelsElem.disabled = false;
+    spawnButton.disabled = false;
 
     spawnButton.onclick = (e) => {
         fetch(`https://${GetParentResourceName()}/spawnClick`, {
