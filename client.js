@@ -4,7 +4,8 @@ let visible = false;
 
 function toggleVisible(force) {
     visible = !visible;
-    if (typeof force != 'undefined') {
+
+    if (typeof force == 'boolean') {
         visible = force;
     }
 
@@ -15,9 +16,7 @@ function toggleVisible(force) {
     }))
 }
 
-RegisterCommand('vehicle', () => {
-    toggleVisible()
-})
+RegisterCommand('vehicle', toggleVisible)
 
 RegisterNuiCallbackType('spawnClick');
 on('__cfx_nui:spawnClick', async (data) => {
@@ -38,8 +37,6 @@ on('__cfx_nui:spawnClick', async (data) => {
     SetModelAsNoLongerNeeded(hash);
     
     SetPedIntoVehicle(playerPed, vehicle, -1)
-
-    console.log(GetEntityScript(vehicle))
 })
 
 RegisterNuiCallbackType('close');
